@@ -1,7 +1,11 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, Dispatch, SetStateAction, FC} from "react";
 import NumberInput from "./NumberInput";
 
-const Calculator = () => {
+interface ICalc { //Calc is short for calculator chat im just using slang
+    totalSetter : Dispatch<SetStateAction<number>>
+}
+
+const Calculator : FC<ICalc> = ({totalSetter}) => {
 
     const [baseHours, setRate] = useState<number>(0)
     const [ub1Hours, setUb1Hours] = useState<number>(0)
@@ -18,11 +22,11 @@ const Calculator = () => {
     }
 
     useEffect(() => {
-
+        totalSetter(gross())
     }, [baseHours, ub1Hours, ub2Hours, ub3Hours, ub4Hours])
 
     return(
-        <div>
+        <section className="flex-col mt-10">
             <NumberInput addStyles="border border-black" 
                 value={baseHours}
                 setValue={setRate}
@@ -48,8 +52,8 @@ const Calculator = () => {
                 setValue={setUb4Hours}
                 previewValue={110}
             />
-        </div>
+        </section>
     )
 }
 
-export default Calculator
+export default Calculator;

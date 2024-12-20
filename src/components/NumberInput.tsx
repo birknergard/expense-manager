@@ -3,25 +3,25 @@ import React, { FC, Dispatch, SetStateAction } from "react";
 interface INumberInput {
     value : number,
     setValue : Dispatch<SetStateAction<number>>
-    previewValue : string
-    addStyle? : string
+    previewValue : number
+    addStyles? : string
 }
 
 const NumberInput : FC<INumberInput> = ({
     value, 
     setValue, 
-    addStyle, 
+    addStyles, 
     previewValue
 }) => {
     return(
         <div className="flex flex-row">
-            <input className={`p-1 rounded-mb text-lg ${addStyle}`}
+            <input className={`w-20 p-1 rounded-mb text-lg border border-black ${addStyles}`}
                 value={value}
-                onChange = {(e) => setValue(e.current.value)}
+                onChange = {(e) => setValue(parseInt(e.target.value))}
                 type="number" 
             />
             <h2>
-                * {previewValue}
+                x {previewValue}
             </h2>
         </div>
     );
