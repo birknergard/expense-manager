@@ -1,9 +1,11 @@
 export interface Expense {
+    id?: number
     name: string
-    price: number
+    cost: number
 }
 
 export interface IncomeSource {
+    id?: number
     name: string
     amount: number
 }

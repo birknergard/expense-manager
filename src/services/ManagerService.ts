@@ -5,10 +5,15 @@ const ManagerService = (() => {
 
     const BASE_URL = "http://localhost:5000/"
 
-    const getExpenses = async() : Promise<Expense[]> => {
+    const getAllExpenses = async() : Promise<Expense[]> => {
         const response = await axios.get(`${BASE_URL}/Expense`);
         return response.data;
     } 
+
+    const getExpense = async(id : number) : Promise<Expense> => {
+        const response = await axios.get(`${BASE_URL}/Expense/${id}`);
+        return response.data;
+    }
 
     const postExpense = async(newExpense : Expense) => {
         const response = await axios.post(`${BASE_URL}/Expense`, newExpense); 
@@ -24,9 +29,12 @@ const ManagerService = (() => {
         const response = await axios.put(`${BASE_URL}/Expense/${id}`, newExpense);
         return response.data;
     }
+    const getAllIncomes = async() : Promise<Expense[]> => {
+        const response = await axios.get(`${BASE_URL}/Income`)
+    }
 
-    const getIncome = async() : Promise<IncomeSource[]> => {
-        const response = await axios.get(`${BASE_URL}/Income`);
+    const getIncome = async(id : number) : Promise<IncomeSource[]> => {
+        const response = await axios.get(`${BASE_URL}/Income/${id}`);
         return response.data;
     }
     
@@ -46,10 +54,13 @@ const ManagerService = (() => {
     }
 
     return{
-        getExpenses,
+        getAllExpenses,
+        getExpense,
         postExpense,
         deleteExpense,
         putExpense,
+        
+        getAllIncomes,
         getIncome,
         postIncome,
         deleteIncome,
@@ -57,3 +68,5 @@ const ManagerService = (() => {
     };
     
 })()
+
+export default ManagerService;
