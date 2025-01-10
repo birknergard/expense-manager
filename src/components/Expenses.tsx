@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, ReactNode, SetStateAction, useState } from "react";
+import React, { Dispatch, FC, ReactNode, SetStateAction, useEffect, useState } from "react";
 import { Expense } from "../interfaces/Models";
 import ManagerService from "../services/ManagerService";
 
@@ -29,6 +29,7 @@ const ExpenseList : FC<IExpenseList> = ({totalSetter}) => {
         const expense = newExpense();
         if(expense !== null){
             ManagerService.postExpense(expense);
+            fetchListFromApi()
         } else {
             console.debug("Name or cost was not supplied, invalid input.")
         } 
@@ -53,6 +54,19 @@ const ExpenseList : FC<IExpenseList> = ({totalSetter}) => {
         ))
     }
 
+    const fetchListFromApi = async() => {
+       const response = await ManagerService.getAllExpenses();  
+       setExpenseList(response);
+    }
+
+    useEffect(() => {
+        fetchListFromApi()
+    }, [expenseList])
+
+    useEffect(() => {
+        fetchListFromApi()
+    }, [])
+
     return(
         <section className="flex flex-col bg-sky-200 col-span-8 p-2 justify-start">
             <h1 className="text-xl text-center">Expenses</h1>
@@ -76,7 +90,7 @@ const ExpenseList : FC<IExpenseList> = ({totalSetter}) => {
 interface IExpenseItem{
     expense : Expense
     deleteMethod : (id : number) => void
-    editMethod: (id : number, editedExpense : Expense) => Promise<Expense> 
+    editMethod: (id : number, editedExpense : Expense) => Promise<Expense | null> 
 }
 
 const ExpenseItem : FC<IExpenseItem> = ({expense, deleteMethod, editMethod}) => {

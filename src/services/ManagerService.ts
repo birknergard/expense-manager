@@ -3,21 +3,61 @@ import { Expense, IncomeSource } from "../interfaces/Models";
 
 const ManagerService = (() => {
 
-    const BASE_URL = "http://localhost:5000/"
+    const BASE_URL = "http://localhost:5000/api"
 
     const getAllExpenses = async() : Promise<Expense[]> => {
-        const response = await axios.get(`${BASE_URL}/Expense`);
-        return response.data;
+        try {
+            const response = await fetch(`${BASE_URL}/Expense`);
+
+            if(!response.ok){
+                throw new Error(`HTTP error. Status: ${response.status}`);
+            }
+
+            const data : Expense[] = await response.json();
+            
+            return data !== null ? data : [];
+
+        } catch (error) {
+            console.error('GetAllExpenses: Error fetching data: ', error)
+            return [];
+        }
     } 
 
-    const getExpense = async(id : number) : Promise<Expense> => {
-        const response = await axios.get(`${BASE_URL}/Expense/${id}`);
-        return response.data;
+    const getExpense = async(id : number) : Promise<Expense | null> => {
+        try {
+            const response = await fetch(`${BASE_URL}/Expense/${id}`);
+
+            if(!response.ok){
+                throw new Error(`HTTP error. Status: ${response.status}`);
+            }
+
+            const data : Expense = await response.json();
+            
+            return data;
+
+        } catch (error) {
+            console.error('GetAllExpenses: Error fetching data: ', error)
+            return null;
+        }
     }
 
     const postExpense = async(newExpense : Expense) => {
-        const response = await axios.post(`${BASE_URL}/Expense`, newExpense); 
-        return response.data;
+        try {
+            const response = await fetch(`${BASE_URL}/Expense`, {
+                method: 'POST', 
+                headers: {
+                    'Content-Type' : 'application/json',
+                },
+                body: JSON.stringify(newExpense),
+            });
+
+            if(!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`)
+            }
+
+        } catch (error) {
+            console.error('Error with POST:', error)
+        }
     }
 
     const deleteExpense = async(id : number) => {
@@ -31,18 +71,58 @@ const ManagerService = (() => {
     }
 
     const getAllIncomes = async() : Promise<IncomeSource[]> => {
-        const response = await axios.get(`${BASE_URL}/Income`);
-        return response.data;
+        try {
+            const response = await fetch(`${BASE_URL}/Income`);
+
+            if(!response.ok){
+                throw new Error(`HTTP error. Status: ${response.status}`);
+            }
+
+            const data : IncomeSource[] = await response.json();
+            
+            return data !== null ? data : [];
+
+        } catch (error) {
+            console.error('GetAllExpenses: Error fetching data: ', error)
+            return [];
+        }
     }
 
-    const getIncome = async(id : number) : Promise<IncomeSource> => {
-        const response = await axios.get(`${BASE_URL}/Income/${id}`);
-        return response.data;
+    const getIncome = async(id : number) : Promise<IncomeSource | null> => {
+        try {
+            const response = await fetch(`${BASE_URL}/Income/${id}`);
+
+            if(!response.ok){
+                throw new Error(`HTTP error. Status: ${response.status}`);
+            }
+
+            const data : IncomeSource = await response.json();
+            
+            return data;
+
+        } catch (error) {
+            console.error('GetAllExpenses: Error fetching data: ', error)
+            return null;
+        }
     }
     
     const postIncome = async(newIncome : IncomeSource) => {
-        const response = await axios.post(`${BASE_URL}/Income`, newIncome); 
-        return response.data;
+        try {
+            const response = await fetch(`${BASE_URL}/Income`, {
+                method: 'POST', 
+                headers: {
+                    'Content-Type' : 'application/json',
+                },
+                body: JSON.stringify(newIncome),
+            });
+
+            if(!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`)
+            }
+
+        } catch (error) {
+            console.error('Error with POST:', error)
+        }
     }
 
     const deleteIncome = async(id : number) => {
