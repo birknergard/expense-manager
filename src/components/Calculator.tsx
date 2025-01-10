@@ -26,7 +26,7 @@ const Calculator : FC<ICalc> = ({totalSetter}) => {
     }, [baseHours, ub1Hours, ub2Hours, ub3Hours, ub4Hours])
 
     return(
-        <section className="flex-col mt-10">
+        <section className="flex flex-col p-2 mt-10 col-span-4 items-center bg-amber-200 ">
             <NumberInput addStyles="border border-black" 
                 value={baseHours}
                 setValue={setRate}

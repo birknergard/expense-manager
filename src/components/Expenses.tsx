@@ -6,11 +6,6 @@ interface IExpenseList{
     totalSetter: Dispatch<SetStateAction<number>>
 }
 
-interface IExpenseItem{
-    expense : Expense
-    deleteMethod : (id : number) => void
-    editMethod: (id : number, editedExpense : Expense) => Expense 
-}
 
 const ExpenseList : FC<IExpenseList> = ({totalSetter}) => {
 
@@ -42,9 +37,10 @@ const ExpenseList : FC<IExpenseList> = ({totalSetter}) => {
     const edit = (id : number) => {
         const editedExpense = newExpense();
         if(editedExpense !== null){
-            ManagerService.putExpense(id, editedExpense)
-            return ManagerService.getExpense
+            ManagerService.putExpense(id, editedExpense);
+            return ManagerService.getExpense(id);
         }
+        return ManagerService.getExpense(id);
     }
 
     const remove = (id : number) => {
@@ -58,10 +54,29 @@ const ExpenseList : FC<IExpenseList> = ({totalSetter}) => {
     }
 
     return(
-        <div>
+        <section className="flex flex-col bg-sky-200 col-span-8 p-2 justify-start">
+            <h1 className="text-xl text-center">Expenses</h1>
+            <div className="my-2">
+                <h2 className="text-lg">Add New</h2>
+                <ExpenseInput 
+                    createMethod={create}             
+                    expenseName={newExpenseName}
+                    setName={setNewExpenseName}
+                    cost={newExpenseCost}
+                    setCost={setNewExpenseCost}
+                />       
+            </div>
+            <h2 className="text-lg">Overview</h2>
             {updateUI()}
-        </div>
+        </section>
     );
+
+}
+
+interface IExpenseItem{
+    expense : Expense
+    deleteMethod : (id : number) => void
+    editMethod: (id : number, editedExpense : Expense) => Promise<Expense> 
 }
 
 const ExpenseItem : FC<IExpenseItem> = ({expense, deleteMethod, editMethod}) => {
@@ -71,16 +86,52 @@ const ExpenseItem : FC<IExpenseItem> = ({expense, deleteMethod, editMethod}) => 
     }
 
     return(
-        <div className="flex flex-col">
-            <input 
-                type="button" 
-                value="Remove" 
-                onClick={removeSelf}
-            />
-            
-
+        <div className="flex flex-row items-between">
+            <h2>{expense.name}</h2>
+            <h2>{expense.cost}</h2>
         </div>
     );
 } 
+
+interface IExpenseInput{
+    expenseName : string
+    setName : Dispatch<SetStateAction<string>>
+
+    cost : number
+    setCost : Dispatch<SetStateAction<number>>
+
+    createMethod : () => void
+}
+
+const ExpenseInput : FC<IExpenseInput> = ({
+    expenseName,
+    setName,
+    cost,
+    setCost,
+    createMethod
+}) => {
+    return(
+        <div className="flex flex-row">
+            <input className="border p-1 rounded-md border-black" 
+                type="text"  
+                placeholder="Enter name of expense"
+                value={expenseName} 
+                onChange={(e) => setName(e.target.value)}
+            />
+
+            <input className="w-14 rounded-md p-1 border border-black" 
+                type="number" 
+                value={cost} 
+                onChange={e => setCost(parseInt(e.target.value))}
+            />
+
+            <input className="rounded-md bg-white p-2 border border-black" 
+                type="button" 
+                value="submit" 
+                onClick={createMethod}
+            />
+        </div>
+    )
+}
 
 export default ExpenseList;

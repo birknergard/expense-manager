@@ -29,11 +29,13 @@ const ManagerService = (() => {
         const response = await axios.put(`${BASE_URL}/Expense/${id}`, newExpense);
         return response.data;
     }
-    const getAllIncomes = async() : Promise<Expense[]> => {
-        const response = await axios.get(`${BASE_URL}/Income`)
+
+    const getAllIncomes = async() : Promise<IncomeSource[]> => {
+        const response = await axios.get(`${BASE_URL}/Income`);
+        return response.data;
     }
 
-    const getIncome = async(id : number) : Promise<IncomeSource[]> => {
+    const getIncome = async(id : number) : Promise<IncomeSource> => {
         const response = await axios.get(`${BASE_URL}/Income/${id}`);
         return response.data;
     }

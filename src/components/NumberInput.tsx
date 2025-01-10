@@ -14,8 +14,8 @@ const NumberInput : FC<INumberInput> = ({
     previewValue
 }) => {
     return(
-        <div className="flex flex-row">
-            <input className={`w-20 p-1 rounded-mb text-lg border border-black ${addStyles}`}
+        <div className="flex flex-row w-full">
+            <input className={`w-20 my-1 p-1 rounded-mb text-lg border border-black ${addStyles}`}
                 value={value}
                 onChange = {(e) => setValue(parseInt(e.target.value))}
                 type="number" 
