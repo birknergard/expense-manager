@@ -68,7 +68,7 @@ const ExpenseList : FC<IExpenseList> = ({totalSetter}) => {
     }, [])
 
     return(
-        <section className="flex flex-col bg-sky-200 col-span-8 p-2 justify-start">
+        <section className="flex flex-col bg-sky-200 col-span-12 p-2 justify-start">
             <h1 className="text-xl text-center">Expenses</h1>
             <div className="my-2">
                 <h2 className="text-lg">Add New</h2>
@@ -125,21 +125,21 @@ const ExpenseInput : FC<IExpenseInput> = ({
     createMethod
 }) => {
     return(
-        <div className="flex flex-row">
-            <input className="border p-1 rounded-md border-black" 
+        <div className="grid grid-cols-12 gap-2 w-full">
+            <input className="col-span-8 border p-1 rounded-md border-black" 
                 type="text"  
                 placeholder="Enter name of expense"
                 value={expenseName} 
                 onChange={(e) => setName(e.target.value)}
             />
 
-            <input className="w-14 rounded-md p-1 border border-black" 
+            <input className="col-span-2 rounded-md p-1 border border-black" 
                 type="number" 
                 value={cost} 
                 onChange={e => setCost(parseInt(e.target.value))}
             />
 
-            <input className="rounded-md bg-white p-2 border border-black" 
+            <input className="col-span-2 rounded-md bg-white p-2 border border-black" 
                 type="button" 
                 value="submit" 
                 onClick={createMethod}

@@ -1,6 +1,7 @@
 import React, { useState } from "react"
-import Calculator from "../components/Calculator";
+import Calculator from "../components/Income";
 import ExpenseList from "../components/Expenses";
+import IncomeHandler from "../components/Income";
 
 const Main = () => {
     const [gross, setGross] = useState<number>(0);
@@ -13,8 +14,8 @@ const Main = () => {
                 <h1>Expenses</h1>
             </header>
             <main className="grid grid-cols-12 w-auto mx-5 mt-20 w-4/5 gap-4 content-center">
-                <Calculator
-                    totalSetter={setGross}
+                <IncomeHandler
+                    totalSetter={setIncome}
                 />
                 <ExpenseList 
                     totalSetter={setExpense}
