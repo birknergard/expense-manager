@@ -55,18 +55,17 @@ const IncomeHandler : FC<IHandler> = ({totalSetter}) => {
                     setValue={setUb4Hours}
                     previewValue={110}
                 />
+                <h2 className="col-span-12 text-center text-lg mt-3">Stipend</h2>
+                <div className="col-span-12 flex flex-row items-center justify-center">
+                    <input className="min-w-2 text-start border-l border-y border-black bg-white"
+                        type="number" 
+                        value={stipend}
+                        onChange={e => setStipend(parseInt(e.target.value))}
+                    />
+                    <h3 className="min-w-2 text-start border border-r border-y border-black bg-white">NOK</h3>
+                </div>
             </div>
 
-            <h2 className="col-span-12 text-center text-lg mt-3">Stipend</h2>
-            <div className="flex flex-row items-center justify-center border border-black">
-                <input className="max-w-20 border border-black rounded-md p-1"
-                    type="number" 
-                    value={stipend}
-                    onChange={e => setStipend(parseInt(e.target.value))}
-                />
-                <h3></h3>
-
-            </div>
         </section>
     )
 }

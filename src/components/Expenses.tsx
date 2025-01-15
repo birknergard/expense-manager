@@ -10,6 +10,7 @@ interface IExpenseList{
 const ExpenseList : FC<IExpenseList> = ({totalSetter}) => {
 
     const [expenseList, setExpenseList] = useState<Expense[]>([]);
+
     const [newExpenseName, setNewExpenseName] = useState<string>("");
     const [newExpenseCost, setNewExpenseCost] = useState<number>(0);
 
@@ -29,9 +30,10 @@ const ExpenseList : FC<IExpenseList> = ({totalSetter}) => {
         const expense = newExpense();
         if(expense !== null){
             ManagerService.postExpense(expense);
-            fetchListFromApi()
+            clear();
+            setExpenseList([... expenseList, expense])
         } else {
-            console.debug("Name or cost was not supplied, invalid input.")
+            console.debug("Name or cost was not supplied, invalid input.");
         } 
     }
 
@@ -39,33 +41,46 @@ const ExpenseList : FC<IExpenseList> = ({totalSetter}) => {
         const editedExpense = newExpense();
         if(editedExpense !== null){
             ManagerService.putExpense(id, editedExpense);
-            return ManagerService.getExpense(id);
         }
-        return ManagerService.getExpense(id);
     }
 
     const remove = (id : number) => {
-        ManagerService.deleteExpense(id)                
+        ManagerService.deleteExpense(id);
     }
 
-    const updateUI = () : React.JSX.Element[] => {
+    const getList = () : React.JSX.Element[] => {
         return expenseList.map((expense, index) => (
            <ExpenseItem key={index} expense={expense} deleteMethod={remove} editMethod={edit} />  
         ))
     }
 
-    const fetchListFromApi = async() => {
+    const clear = () => {
+        setNewExpenseName("")
+        setNewExpenseCost(0)
+    }
+
+    const refresh = async() => {
        const response = await ManagerService.getAllExpenses();  
        setExpenseList(response);
     }
 
-    useEffect(() => {
-        fetchListFromApi()
-    }, [expenseList])
+    const sum = () => {
+        let sum = 0;
+
+        for(let i = 0 ; i > expenseList.length ; i++){
+            sum += expenseList[i].cost;
+        }
+
+        return sum;
+    }
 
     useEffect(() => {
-        fetchListFromApi()
+        refresh();
     }, [])
+
+    useEffect(() => {
+        totalSetter(sum())
+    }, [expenseList])
 
     return(
         <section className="flex flex-col bg-sky-200 col-span-12 p-2 justify-start">
@@ -81,7 +96,7 @@ const ExpenseList : FC<IExpenseList> = ({totalSetter}) => {
                 />       
             </div>
             <h2 className="text-lg">Overview</h2>
-            {updateUI()}
+            {getList()}
         </section>
     );
 
@@ -90,7 +105,7 @@ const ExpenseList : FC<IExpenseList> = ({totalSetter}) => {
 interface IExpenseItem{
     expense : Expense
     deleteMethod : (id : number) => void
-    editMethod: (id : number, editedExpense : Expense) => Promise<Expense | null> 
+    editMethod: (id : number) => void 
 }
 
 const ExpenseItem : FC<IExpenseItem> = ({expense, deleteMethod, editMethod}) => {
