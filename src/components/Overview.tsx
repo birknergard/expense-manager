@@ -11,10 +11,10 @@ const Overview : FC<IOverview> = ({
 }) => {
 
     return(
-        <section className="flex flex-col w-full col-span-12 justify-self-center rounded-xl justify-items-center justify-between p-5 bg-gray-200">
-            <h1 className="text-xl text-center">Overview</h1>
-            <h2 className="text-2xl text-center">1069</h2>
-            <div className="flex flex-row items-center justify-evenly">
+    <section className="flex flex-col w-full col-span-12 justify-self-center rounded-xl 
+                        items-center p-5 bg-gray-200 gap-5">
+            <h2 className="text-4xl text-center">{income - expenses}</h2>
+            <div className="flex flex-row w-1/3 items-center justify-center gap-5">
                 <Field
                     title="Income" 
                     field={income}
@@ -48,9 +48,9 @@ const Field : FC<IField> = ({
 }) => {
 
     return(
-        <div className="flex flex-col w-1/4 p-2 border border-black rounded-lg ">
+        <div className="flex flex-col w-full p-3 border border-black rounded-lg ">
             <h2 className="text-center">{title}</h2>
-            <h2 className={`text-center text-${color}`}>{`${symbol} ${field}`}</h2>
+            <h2 className={`text-center text-xl text-${color}`}>{`${symbol} ${field}`}</h2>
         </div>
     )
 }

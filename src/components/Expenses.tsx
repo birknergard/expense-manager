@@ -67,7 +67,7 @@ const ExpenseList : FC<IExpenseList> = ({totalSetter}) => {
     const sum = () => {
         let sum = 0;
 
-        for(let i = 0 ; i > expenseList.length ; i++){
+        for(let i = 0 ; i < expenseList.length ; i++){
             sum += expenseList[i].cost;
         }
 
@@ -76,6 +76,7 @@ const ExpenseList : FC<IExpenseList> = ({totalSetter}) => {
 
     useEffect(() => {
         refresh();
+        totalSetter(sum())
     }, [])
 
     useEffect(() => {
@@ -83,7 +84,7 @@ const ExpenseList : FC<IExpenseList> = ({totalSetter}) => {
     }, [expenseList])
 
     return(
-        <section className="flex flex-col bg-sky-200 col-span-12 p-2 justify-start">
+        <section className="justify-self-center w-full flex flex-col bg-gray-200 col-span-12 p-5 rounded-xl justify-center">
             <h1 className="text-xl text-center">Expenses</h1>
             <div className="my-2">
                 <h2 className="text-lg">Add New</h2>
@@ -96,7 +97,9 @@ const ExpenseList : FC<IExpenseList> = ({totalSetter}) => {
                 />       
             </div>
             <h2 className="text-lg">Overview</h2>
-            {getList()}
+            <div className="flex flex-col justify-center w-full">
+                {getList()}
+            </div>
         </section>
     );
 
@@ -106,18 +109,24 @@ interface IExpenseItem{
     expense : Expense
     deleteMethod : (id : number) => void
     editMethod: (id : number) => void 
+    addStyles?: string
 }
 
-const ExpenseItem : FC<IExpenseItem> = ({expense, deleteMethod, editMethod}) => {
+const ExpenseItem : FC<IExpenseItem> = ({
+    expense,
+    deleteMethod,
+    editMethod,
+    addStyles
+}) => {
 
     const removeSelf = () => {
         deleteMethod(expense.id!!)
     }
 
     return(
-        <div className="flex flex-row items-between">
-            <h2>{expense.name}</h2>
-            <h2>{expense.cost}</h2>
+        <div className={`flex flex-row w-full items-between ${addStyles}`}>
+            <h2 className="text-lg">{expense.name}</h2>
+            <h2 className="text-lg">{expense.cost}</h2>
         </div>
     );
 } 
@@ -141,7 +150,7 @@ const ExpenseInput : FC<IExpenseInput> = ({
 }) => {
     return(
         <div className="grid grid-cols-12 gap-2 w-full">
-            <input className="col-span-8 border p-1 rounded-md border-black" 
+            <input className="col-span-6 border p-1 rounded-md border-black" 
                 type="text"  
                 placeholder="Enter name of expense"
                 value={expenseName} 
@@ -154,7 +163,7 @@ const ExpenseInput : FC<IExpenseInput> = ({
                 onChange={e => setCost(parseInt(e.target.value))}
             />
 
-            <input className="col-span-2 rounded-md bg-white p-2 border border-black" 
+            <input className="col-span-4 rounded-md bg-white p-2 border border-black" 
                 type="button" 
                 value="submit" 
                 onClick={createMethod}

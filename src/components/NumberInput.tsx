@@ -14,17 +14,14 @@ const NumberInput : FC<INumberInput> = ({
     previewValue
 }) => {
     return(
-        <div className={`gap-2 flex flex-row w-full items-center ${addStyles}`}>
-            <input className="col-span-4 max-w-16 my-1 p-1 rounded-md text-md border border-black"
+        <div className={`flex flex-row w-full items-center justify-between ${addStyles}`}>
+            <input className="w-16 border border-black rounded-md p-1"
                 value={value}
                 onChange = {(e) => setValue(parseInt(e.target.value))}
                 type="number" 
             />
-            <h2 className="col-span-4 text-md text-center">
-                times
-            </h2>
 
-            <h2 className="col-span-4 text-md text-center">
+            <h2 className="text-md text-end">
                 {`${previewValue} NOK`}
             </h2>
         </div>
